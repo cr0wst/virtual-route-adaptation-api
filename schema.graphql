@@ -1,0 +1,53 @@
+type Query {
+    routes: [Route]!
+    route(id: ID!): Route
+    suggestFlightPlanRoutes(flightPlan: FlightPlanInput!): [Suggestion]!
+}
+
+input FlightPlanInput {
+    aircraft: String
+    departure: String
+    arrival: String
+    altitude: String
+    remarks: String
+    route: String
+}
+
+type Suggestion {
+    route: RouteDetails
+    altitude: String
+    criteria: [Criteria]
+    reason: String!
+}
+
+type Route {
+    id: ID!,
+    altitudes: MinMax!,
+    criteria: [Criteria],
+    route: RouteDetails!
+    arrivals: [String]!,
+    departures: [String]!,
+}
+
+type Criteria {
+    id: ID,
+    facility: String,
+    priority: Int,
+}
+
+type RouteDetails {
+    string: String!,
+    arrival: String,
+    departure: String,
+    fixes: [Fix],
+}
+
+type Fix {
+    id: ID!,
+    icaoCode: String!,
+}
+
+type MinMax {
+    min: Int!,
+    max: Int!,
+}

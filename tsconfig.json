@@ -1,0 +1,15 @@
+{
+  "include": [
+    "src/**/*",
+    "tests/**/*",
+  ],
+  "exclude": [
+    "node_modules/**/*"
+  ],
+  "compilerOptions": {
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "esModuleInterop": true,
+    "baseUrl": ".",
+  }
+}
