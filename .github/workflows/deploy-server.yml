@@ -9,9 +9,6 @@ on:
 
 jobs:
   build-and-deploy:
-    defaults:
-      run:
-        working-directory: server
     runs-on: ubuntu-latest
 
     strategy:
@@ -38,7 +35,7 @@ jobs:
           command: c
           cwd: "./"
           files: |
-            server/
+            /
           outPath: deploy.tar
 
       - name: Deploy App to CapRover
