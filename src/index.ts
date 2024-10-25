@@ -56,6 +56,7 @@ const resolvers = {
             altitude: flightPlan.altitude,
             route: r.route,
             criteria: r.criteria,
+            aircraftCapability: capability,
             reason: "ADAR Route",
           };
         });
