@@ -38,39 +38,10 @@ export function convertAdarRecordToRouteRecord(adarRecord: any) {
 }
 
 function buildRoute(adarRecord: any) {
-  const route: any = {};
-
-  // Add properties only if they are defined
-  if (adarRecord["ADARAutoRouteAlphas"]["RouteString"]) {
-    route.string = adarRecord["ADARAutoRouteAlphas"]["RouteString"];
-  }
-  if (adarRecord["ADARAutoRouteAlphas"]["STAR_ID"]) {
-    route.arrival = adarRecord["ADARAutoRouteAlphas"]["STAR_ID"];
-  }
-  if (adarRecord["ADARAutoRouteAlphas"]["DP_ID"]) {
-    route.departure = adarRecord["ADARAutoRouteAlphas"]["DP_ID"];
-  }
-
-  // Process RouteFixList if it exists and has RouteFix entries
-  if (adarRecord["RouteFixList"]?.["RouteFix"]?.length) {
-    route.fixes = adarRecord["RouteFixList"]["RouteFix"]
-      .map((fix: any) => {
-        const fixObj: any = {};
-
-        // Add properties only if they are defined
-        if (fix["UniqueFixID"]["FixID"] !== undefined) {
-          fixObj.id = fix["UniqueFixID"]["FixID"];
-        }
-        if (fix["UniqueFixID"]["ICAOCode"] !== undefined) {
-          fixObj.icaoCode = fix["UniqueFixID"]["ICAOCode"];
-        }
-
-        return fixObj;
-      })
-      .filter((fix: any) => Object.keys(fix).length > 0); // Filter out empty objects
-  }
-
-  return route;
+  return adarRecord["ADARAutoRouteAlphas"]["RouteString"]
+    .split(".")
+    .filter((s: string) => s.length > 0)
+    .join(" ");
 }
 
 function buildCriteria(adarRecord: any): any[] {
