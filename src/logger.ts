@@ -10,7 +10,7 @@ const t: any[] = [
 if (process.env.NODE_ENV === "production") {
   t.push(
     new LokiTransport({
-      host: "http://srv-captain--loki:3100",
+      host: process.env.LOKI_HOST,
       labels: { app: "virtual-route-adaptation-api" },
       json: true,
       format: format.json(),
