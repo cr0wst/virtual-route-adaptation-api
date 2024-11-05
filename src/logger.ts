@@ -1,30 +1,29 @@
-// logger.ts
-
 import { createLogger, format, transports } from "winston";
+import LokiTransport from "winston-loki";
 
-// Define the log format
-const logFormat = format.printf(({ level, message, timestamp, stack }) => {
-  return `${timestamp} [${level}]: ${stack || message}`;
-});
+const t: any[] = [
+  new transports.Console({
+    format: format.combine(format.colorize()),
+  }),
+];
+
+if (process.env.NODE_ENV === "production") {
+  t.push(
+    new LokiTransport({
+      host: "http://srv-captain--loki:3100",
+      labels: { app: "virtual-route-adaptation-api" },
+      json: true,
+      format: format.json(),
+      replaceTimestamp: true,
+      onConnectionError: (err) => console.error(err),
+    }),
+  );
+}
 
 // Create the logger instance
 const logger = createLogger({
-  level: process.env.LOG_LEVEL || "info", // Minimum level of messages to log
-  format: format.combine(
-    format.timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
-    format.errors({ stack: true }), // Include stack trace
-    format.splat(), // Support for string interpolation
-    logFormat,
-  ),
-  transports: [
-    new transports.Console({
-      format: format.combine(
-        format.colorize(), // Colorize the output
-        logFormat,
-      ),
-    }),
-    // You can add more transports here (e.g., File, HTTP)
-  ],
+  level: "debug",
+  transports: t,
 });
 
 // Export the logger instance
